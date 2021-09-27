@@ -16,4 +16,6 @@ public class NGramUtilTest {
         List<String> ngrams = NGramUtil.ngram(itr, 3);
         System.out.println(ngrams.toString());
     }
+
+
 }

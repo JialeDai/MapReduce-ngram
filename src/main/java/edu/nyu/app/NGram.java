@@ -1,22 +1,23 @@
 package edu.nyu.app;
 
-import edu.nyu.utils.NGramUtil;
+import edu.nyu.mapper.NGramComputeMapper;
+import edu.nyu.mapper.NGramCountMapper;
+import edu.nyu.mapper.TokenizeMapper;
+import edu.nyu.reducer.NGramComputeReducer;
+import edu.nyu.reducer.NgramCountReducer;
+import edu.nyu.reducer.WordCountReducer;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.StringTokenizer;
 
-import static edu.nyu.utils.NGramUtil.ngram;
 
 /**
  * @author jialedai
@@ -34,51 +35,58 @@ public class NGram {
         }
 
         @SuppressWarnings("deprecation")
-        Job job = new Job(conf, "jd4678 n-gram");
+        Job job = new Job(conf, "jd4678 n-gram-token-count");
         job.setJarByClass(NGram.class);
-        job.setMapperClass(MyMapper.class);
+        job.setMapperClass(TokenizeMapper.class);
 
-        job.setReducerClass(MyReducer.class);
+        job.setReducerClass(WordCountReducer.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(IntWritable.class);
 
         FileInputFormat.addInputPath(job, new Path(otherArgs[0]));
-        FileOutputFormat.setOutputPath(job, new Path(otherArgs[1]));
-        System.exit((job.waitForCompletion(true) ? 0 : 1));
-    }
-
-    static class MyMapper extends Mapper<Object, Text, Text, IntWritable> {
-
-        private final static IntWritable ONE = new IntWritable(1);
-        private Text word = new Text();
-
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            String line = value
-                    .toString()
-                    .replaceAll("[^A-z0-9]", " ")
-                    .toLowerCase();
-
-            StringTokenizer itr = new StringTokenizer(line);
-            List<String> ngrams = NGramUtil.ngram(itr, 3);
-
-            for (int i = 0; i < ngrams.size(); i++) {
-                word.set(ngrams.get(i));
-                context.write(word, ONE);
-            }
+        Path temp1Dir = new Path("temp1");
+        FileSystem fs = FileSystem.get(conf);
+        if (fs.exists(temp1Dir)) {
+            fs.delete(temp1Dir, true);
         }
-    }
+        FileOutputFormat.setOutputPath(job, temp1Dir);
+        if (job.waitForCompletion(true)) {
+            @SuppressWarnings("deprecation")
+            Job job1 = new Job(conf, "jd4678 n-gram-count");
 
-    static class MyReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
+            job1.setJarByClass(NGram.class);
+            job1.setMapperClass(NGramCountMapper.class);
+            job1.setReducerClass(NgramCountReducer.class);
 
-        private IntWritable result = new IntWritable();
+            job1.setOutputKeyClass(Text.class);
+            job1.setOutputValueClass(IntWritable.class);
 
-        public void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-            int sum = 0;
-            for (IntWritable val : values) {
-                sum += val.get();
+            FileInputFormat.addInputPath(job1, temp1Dir);
+            Path temp2Dir = new Path("temp2");
+            if (fs.exists(temp2Dir)) {
+                fs.delete(temp2Dir, true);
             }
-            result.set(sum);
-            context.write(key, result);
+            FileOutputFormat.setOutputPath(job1, temp2Dir);
+            if (job1.waitForCompletion(true)) {
+                @SuppressWarnings("deprecation")
+                Job job2 = new Job(conf, "jd4678 n-gram-possibility-count");
+                conf.set("mapred.textoutputformat.ignoreseparator", "true");
+                conf.set("mapred.textoutputformat.separator", ",");
+                job2.setJarByClass(NGram.class);
+                job2.setMapperClass(NGramComputeMapper.class);
+                job2.setReducerClass(NGramComputeReducer.class);
+
+                job2.setOutputKeyClass(Text.class);
+                job2.setOutputValueClass(Text.class);
+
+                FileInputFormat.addInputPath(job2, temp1Dir);
+                Path outputPath = new Path(otherArgs[1]);
+                if (fs.exists(outputPath)) {
+                    fs.delete(outputPath, true);
+                }
+                FileOutputFormat.setOutputPath(job2, outputPath);
+                System.exit(job2.waitForCompletion(true) ? 0 : 1);
+            }
         }
     }
 }
