@@ -1,2 +1,8 @@
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/mapper/TokenizeMapper.java
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/mapper/NGramComputeMapper.java
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/reducer/WordCountReducer.java
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/reducer/NgramCountReducer.java
 /Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/app/NGram.java
 /Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/utils/NGramUtil.java
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/reducer/NGramComputeReducer.java
+/Users/jialedai/Documents/JavaWorkSpace/big-data-assignment1-ngram/src/main/java/edu/nyu/mapper/NGramCountMapper.java

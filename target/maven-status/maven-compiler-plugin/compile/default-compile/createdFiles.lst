@@ -1,4 +1,8 @@
-edu/nyu/app/NGram$MyReducer.class
 edu/nyu/app/NGram.class
-edu/nyu/app/NGram$MyMapper.class
 edu/nyu/utils/NGramUtil.class
+edu/nyu/mapper/NGramComputeMapper.class
+edu/nyu/reducer/WordCountReducer.class
+edu/nyu/reducer/NGramComputeReducer.class
+edu/nyu/mapper/NGramCountMapper.class
+edu/nyu/mapper/TokenizeMapper.class
+edu/nyu/reducer/NgramCountReducer.class
