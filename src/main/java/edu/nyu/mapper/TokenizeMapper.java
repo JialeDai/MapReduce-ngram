@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * @author jialedai
+ * @email jd4678@nyu.edu
+ * @Date Sep 26, 2021
+ * tokenize the whole line into unigrams, bigrams and trigrams
+ */
 public class TokenizeMapper extends Mapper<Object, Text, Text, IntWritable>{
     private final static IntWritable ONE = new IntWritable(1);
     private Text word = new Text();

@@ -6,6 +6,7 @@ import edu.nyu.mapper.TokenizeMapper;
 import edu.nyu.reducer.NGramComputeReducer;
 import edu.nyu.reducer.NgramCountReducer;
 import edu.nyu.reducer.WordCountReducer;
+import javafx.util.Pair;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
@@ -24,6 +25,7 @@ import java.io.IOException;
  * @email jd4678@nyu.edu
  * @Date Sep 26, 2021
  * map reduce program for ngram
+ * word, count -> unigram, (word, count)... -> unigram
  */
 public class NGram {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
@@ -59,7 +61,7 @@ public class NGram {
             job1.setReducerClass(NgramCountReducer.class);
 
             job1.setOutputKeyClass(Text.class);
-            job1.setOutputValueClass(IntWritable.class);
+            job1.setOutputValueClass(Text.class);
 
             FileInputFormat.addInputPath(job1, temp1Dir);
             Path temp2Dir = new Path("temp2");
@@ -79,7 +81,7 @@ public class NGram {
                 job2.setOutputKeyClass(Text.class);
                 job2.setOutputValueClass(Text.class);
 
-                FileInputFormat.addInputPath(job2, temp1Dir);
+                FileInputFormat.addInputPath(job2, temp2Dir);
                 Path outputPath = new Path(otherArgs[1]);
                 if (fs.exists(outputPath)) {
                     fs.delete(outputPath, true);

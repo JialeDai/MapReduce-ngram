@@ -1,12 +1,8 @@
 package edu.nyu.utils;
 
-import org.apache.commons.collections.IteratorUtils;
-
 import java.util.*;
 
 public class NGramUtil {
-
-    private static Map<Integer, Integer> countRecord = new HashMap<>();
 
     public static List<String> toList(StringTokenizer stringTokenizer) {
         List<String> list = new ArrayList<>();
@@ -29,13 +25,5 @@ public class NGramUtil {
             }
         }
         return ngrams;
-    }
-
-    public static void setCount(Integer length, Integer count) {
-        countRecord.put(length, count);
-    }
-
-    public static Map<Integer, Integer> getCount() {
-        return countRecord;
     }
 }
