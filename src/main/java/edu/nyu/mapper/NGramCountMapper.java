@@ -1,8 +1,6 @@
 package edu.nyu.mapper;
 
 import edu.nyu.utils.NGramUtil;
-import javafx.util.Pair;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
@@ -14,7 +12,7 @@ import java.util.StringTokenizer;
  * @author jialedai
  * @email jd4678@nyu.edu
  * @Date Sep 26, 2021
- * unigram, (the, 102)...
+ * unigram, the-102...
  */
 public class NGramCountMapper extends Mapper<Object, Text, Text, Text> {
     private Text word = new Text();

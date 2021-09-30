@@ -1,6 +1,5 @@
 package edu.nyu.reducer;
 
-import edu.nyu.utils.NGramUtil;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -11,7 +10,7 @@ import java.io.IOException;
  * @author jialedai
  * @email jd4678@nyu.edu
  * @Date Sep 26, 2021
- * unigram, word-count  -> unigram-count,word1-count|word2-count...
+ * unigram, word-count  -> unigram-count,word1-count~word2-count...
  */
 public class NgramCountReducer extends Reducer<Text, Text, Text, Text> {
 

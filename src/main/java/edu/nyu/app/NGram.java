@@ -6,7 +6,6 @@ import edu.nyu.mapper.TokenizeMapper;
 import edu.nyu.reducer.NGramComputeReducer;
 import edu.nyu.reducer.NgramCountReducer;
 import edu.nyu.reducer.WordCountReducer;
-import javafx.util.Pair;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
