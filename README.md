@@ -1,4 +1,4 @@
-CS-GY 6513 (Big Data, HW1)
+# CS-GY 6513 (Big Data, HW1)
 ## running script
 `hadoop jar big-data-assignment1-ngram-1.0-SNAPSHOT.jar edu.nyu.app.NGram -D mapred.textoutputformat.separator="," <input_path>  <output_path>` </br>
 Notice: must specify the program split the key and value by "," using </br>-D mapred.textoutputformat.separator=","
